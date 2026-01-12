@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class MovimientoBancario {
+    private Long id;
     private TipoMovimientoBancario tipoMovimientoBancario;
     private OrigenMovimientoBancario origenMovimientoBancario;
     private TarjetaCredito tarjetaCreditoOrigen;
@@ -15,9 +16,10 @@ public class MovimientoBancario {
     public MovimientoBancario() {
     }
 
-    public MovimientoBancario(TipoMovimientoBancario tipoMovimientoBancario,
+    public MovimientoBancario(Long id, TipoMovimientoBancario tipoMovimientoBancario,
             OrigenMovimientoBancario origenMovimientoBancario, TarjetaCredito tarjetaCreditoOrigen, LocalDateTime fecha,
             BigDecimal importe, String concepto, CuentaBancaria cuentaBancaria) {
+        this.id = id;
         this.tipoMovimientoBancario = tipoMovimientoBancario;
         this.origenMovimientoBancario = origenMovimientoBancario;
         this.tarjetaCreditoOrigen = tarjetaCreditoOrigen;
@@ -25,6 +27,14 @@ public class MovimientoBancario {
         this.importe = importe;
         this.concepto = concepto;
         this.cuentaBancaria = cuentaBancaria;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public TipoMovimientoBancario getTipoMovimientoBancario() {

@@ -1,6 +1,17 @@
-package cybereats.fpmislata.com.banco_back.domain.model;
+package cybereats.fpmislata.com.banco_back.persistence.dao.jpa.entity;
 
-public class Cliente {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "cliente")
+public class ClienteJpaEntity implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
     private String password;
@@ -10,12 +21,11 @@ public class Cliente {
     private String dni;
     private String apiToken;
 
-    public Cliente() {
+    public ClienteJpaEntity() {
     }
 
-    public Cliente(Long id, String login, String password, String nombre, String apellido1, String apellido2,
-            String dni,
-            String apiToken) {
+    public ClienteJpaEntity(Long id, String login, String password, String nombre, String apellido1, String apellido2,
+            String dni, String apiToken) {
         this.id = id;
         this.login = login;
         this.password = password;

@@ -1,23 +1,41 @@
-package cybereats.fpmislata.com.banco_back.domain.model;
+package cybereats.fpmislata.com.banco_back.persistence.dao.jpa.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class TarjetaCredito {
+@Entity
+@Table(name = "tarjeta_credito")
+public class TarjetaCreditoJpaEntity implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String numeroTarjeta;
     private LocalDate fechaCaducidad;
     private int cvc;
     private String nombreCompleto;
 
-    public TarjetaCredito() {
+    @ManyToOne
+    @JoinColumn(name = "cuenta_bancaria_id")
+    private CuentaBancariaJpaEntity cuentaBancaria;
+
+    public TarjetaCreditoJpaEntity() {
     }
 
-    public TarjetaCredito(Long id, String numeroTarjeta, LocalDate fechaCaducidad, int cvc, String nombreCompleto) {
+    public TarjetaCreditoJpaEntity(Long id, String numeroTarjeta, LocalDate fechaCaducidad, int cvc,
+            String nombreCompleto, CuentaBancariaJpaEntity cuentaBancaria) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
         this.cvc = cvc;
         this.nombreCompleto = nombreCompleto;
+        this.cuentaBancaria = cuentaBancaria;
     }
 
     public Long getId() {
@@ -58,5 +76,13 @@ public class TarjetaCredito {
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
+    }
+
+    public CuentaBancariaJpaEntity getCuentaBancaria() {
+        return cuentaBancaria;
+    }
+
+    public void setCuentaBancaria(CuentaBancariaJpaEntity cuentaBancaria) {
+        this.cuentaBancaria = cuentaBancaria;
     }
 }
