@@ -28,8 +28,7 @@ public class MovimientoBancarioMapper {
                 movimientoBancario.getFecha(),
                 movimientoBancario.getImporte(),
                 movimientoBancario.getConcepto(),
-                TarjetaCreditoMapper.getInstance().toDto(movimientoBancario.getTarjetaCreditoOrigen()),
-                CuentaBancariaMapper.getInstance().toDto(movimientoBancario.getCuentaBancaria()));
+                TarjetaCreditoMapper.getInstance().toDto(movimientoBancario.getTarjetaCreditoOrigen()));
     }
 
     public MovimientoBancario toModel(MovimientoBancarioDto movimientoBancarioDto) {
@@ -44,7 +43,6 @@ public class MovimientoBancarioMapper {
                 TarjetaCreditoMapper.getInstance().toModel(movimientoBancarioDto.tarjetaCreditoOrigen()),
                 movimientoBancarioDto.fecha(),
                 movimientoBancarioDto.importe(),
-                movimientoBancarioDto.concepto(),
-                CuentaBancariaMapper.getInstance().toModel(movimientoBancarioDto.cuentaBancaria()));
+                movimientoBancarioDto.concepto());
     }
 }

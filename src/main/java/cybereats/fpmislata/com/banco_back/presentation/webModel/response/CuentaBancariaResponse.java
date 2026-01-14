@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record CuentaBancariaResponse(
-        Long id,
-        BigDecimal saldo,
-        String iban,
-        ClienteResponse cliente,
-        List<TarjetaCreditoResponse> tarjetas) {
+                Long id,
+                BigDecimal saldo,
+                String iban,
+                ClienteResponse cliente,
+                List<TarjetaCreditoResponse> tarjetas,
+                List<MovimientoBancarioResponse> movimientos) {
 }

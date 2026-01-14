@@ -28,8 +28,7 @@ public class MovimientoBancarioMapper {
                 entity.getFecha(),
                 entity.getImporte(),
                 entity.getConcepto(),
-                TarjetaCreditoMapper.getInstance().toDto(entity.getTarjetaCreditoOrigen()),
-                CuentaBancariaMapper.getInstance().toDto(entity.getCuentaBancaria()));
+                TarjetaCreditoMapper.getInstance().toDto(entity.getTarjetaCreditoOrigen()));
     }
 
     public MovimientoBancarioJpaEntity toEntity(MovimientoBancarioDto dto) {
@@ -45,7 +44,6 @@ public class MovimientoBancarioMapper {
         entity.setImporte(dto.importe());
         entity.setConcepto(dto.concepto());
         entity.setTarjetaCreditoOrigen(TarjetaCreditoMapper.getInstance().toEntity(dto.tarjetaCreditoOrigen()));
-        entity.setCuentaBancaria(CuentaBancariaMapper.getInstance().toEntity(dto.cuentaBancaria()));
 
         return entity;
     }

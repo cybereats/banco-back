@@ -1,6 +1,8 @@
 package cybereats.fpmislata.com.banco_back.domain.model;
 
+import cybereats.fpmislata.com.banco_back.exception.BusinessException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CuentaBancaria {
@@ -8,7 +10,8 @@ public class CuentaBancaria {
     private BigDecimal saldo;
     private String iban;
     private Cliente cliente;
-    private List<TarjetaCredito> tarjetas;
+    private List<TarjetaCredito> tarjetas = new ArrayList<>();
+    private List<MovimientoBancario> movimientos = new ArrayList<>();
 
     public CuentaBancaria() {
     }
@@ -18,6 +21,30 @@ public class CuentaBancaria {
         this.saldo = saldo;
         this.iban = iban;
         this.cliente = cliente;
+    }
+
+    public void addMovimiento(MovimientoBancario movimiento) {
+        if (this.movimientos == null) {
+            this.movimientos = new ArrayList<>();
+        }
+        this.movimientos.add(movimiento);
+    }
+
+    public void retirar(BigDecimal importe) {
+        if (importe.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El importe a retirar debe ser mayor que cero");
+        }
+        if (this.saldo.compareTo(importe) < 0) {
+            throw new BusinessException("Saldo insuficiente");
+        }
+        this.saldo = this.saldo.subtract(importe);
+    }
+
+    public void ingresar(BigDecimal importe) {
+        if (importe.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El importe a ingresar debe ser mayor que cero");
+        }
+        this.saldo = this.saldo.add(importe);
     }
 
     public Long getId() {
@@ -58,5 +85,13 @@ public class CuentaBancaria {
 
     public void setTarjetas(List<TarjetaCredito> tarjetas) {
         this.tarjetas = tarjetas;
+    }
+
+    public List<MovimientoBancario> getMovimientos() {
+        return movimientos;
+    }
+
+    public void setMovimientos(List<MovimientoBancario> movimientos) {
+        this.movimientos = movimientos;
     }
 }

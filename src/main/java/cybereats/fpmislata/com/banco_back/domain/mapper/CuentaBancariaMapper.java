@@ -2,7 +2,6 @@ package cybereats.fpmislata.com.banco_back.domain.mapper;
 
 import cybereats.fpmislata.com.banco_back.domain.dto.CuentaBancariaDto;
 import cybereats.fpmislata.com.banco_back.domain.model.CuentaBancaria;
-import java.util.stream.Collectors;
 
 public class CuentaBancariaMapper {
     private static CuentaBancariaMapper INSTANCE;
@@ -31,6 +30,11 @@ public class CuentaBancariaMapper {
                         ? cuentaBancaria.getTarjetas().stream()
                                 .map(TarjetaCreditoMapper.getInstance()::toDto)
                                 .toList()
+                        : null,
+                cuentaBancaria.getMovimientos() != null
+                        ? cuentaBancaria.getMovimientos().stream()
+                                .map(MovimientoBancarioMapper.getInstance()::toDto)
+                                .toList()
                         : null);
     }
 
@@ -48,6 +52,12 @@ public class CuentaBancariaMapper {
         if (cuentaBancariaDto.tarjetas() != null) {
             cuentaBancaria.setTarjetas(cuentaBancariaDto.tarjetas().stream()
                     .map(TarjetaCreditoMapper.getInstance()::toModel)
+                    .toList());
+        }
+
+        if (cuentaBancariaDto.movimientos() != null) {
+            cuentaBancaria.setMovimientos(cuentaBancariaDto.movimientos().stream()
+                    .map(MovimientoBancarioMapper.getInstance()::toModel)
                     .toList());
         }
 

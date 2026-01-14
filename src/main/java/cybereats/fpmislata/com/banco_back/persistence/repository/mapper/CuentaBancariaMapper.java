@@ -2,7 +2,6 @@ package cybereats.fpmislata.com.banco_back.persistence.repository.mapper;
 
 import cybereats.fpmislata.com.banco_back.domain.dto.CuentaBancariaDto;
 import cybereats.fpmislata.com.banco_back.persistence.dao.jpa.entity.CuentaBancariaJpaEntity;
-import java.util.stream.Collectors;
 
 public class CuentaBancariaMapper {
     private static CuentaBancariaMapper INSTANCE;
@@ -31,6 +30,11 @@ public class CuentaBancariaMapper {
                         ? entity.getTarjetas().stream()
                                 .map(TarjetaCreditoMapper.getInstance()::toDto)
                                 .toList()
+                        : null,
+                entity.getMovimientos() != null
+                        ? entity.getMovimientos().stream()
+                                .map(MovimientoBancarioMapper.getInstance()::toDto)
+                                .toList()
                         : null);
     }
 
@@ -47,6 +51,11 @@ public class CuentaBancariaMapper {
         if (dto.tarjetas() != null) {
             entity.setTarjetas(dto.tarjetas().stream()
                     .map(TarjetaCreditoMapper.getInstance()::toEntity)
+                    .toList());
+        }
+        if (dto.movimientos() != null) {
+            entity.setMovimientos(dto.movimientos().stream()
+                    .map(MovimientoBancarioMapper.getInstance()::toEntity)
                     .toList());
         }
 

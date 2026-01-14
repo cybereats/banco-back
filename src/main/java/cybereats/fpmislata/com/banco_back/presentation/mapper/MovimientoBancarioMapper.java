@@ -1,6 +1,5 @@
 package cybereats.fpmislata.com.banco_back.presentation.mapper;
 
-import cybereats.fpmislata.com.banco_back.domain.dto.CuentaBancariaDto;
 import cybereats.fpmislata.com.banco_back.domain.dto.MovimientoBancarioDto;
 import cybereats.fpmislata.com.banco_back.domain.dto.TarjetaCreditoDto;
 import cybereats.fpmislata.com.banco_back.presentation.webModel.request.MovimientoBancarioRequest;
@@ -32,8 +31,7 @@ public class MovimientoBancarioMapper {
                 request.fecha(),
                 request.importe(),
                 request.concepto(),
-                request.tarjetaCreditoId() != null ? mapTarjetaCredito(request.tarjetaCreditoId()) : null,
-                request.cuentaBancariaId() != null ? mapCuentaBancaria(request.cuentaBancariaId()) : null);
+                request.tarjetaCreditoId() != null ? mapTarjetaCredito(request.tarjetaCreditoId()) : null);
     }
 
     public MovimientoBancarioResponse toResponse(MovimientoBancarioDto dto) {
@@ -48,15 +46,10 @@ public class MovimientoBancarioMapper {
                 dto.fecha(),
                 dto.importe(),
                 dto.concepto(),
-                TarjetaCreditoMapper.getInstance().toResponse(dto.tarjetaCreditoOrigen()),
-                CuentaBancariaMapper.getInstance().toResponse(dto.cuentaBancaria()));
+                TarjetaCreditoMapper.getInstance().toResponse(dto.tarjetaCreditoOrigen()));
     }
 
     private TarjetaCreditoDto mapTarjetaCredito(Long id) {
         return new TarjetaCreditoDto(id, null, null, 0, null);
-    }
-
-    private CuentaBancariaDto mapCuentaBancaria(Long id) {
-        return new CuentaBancariaDto(id, null, null, null, null);
     }
 }

@@ -30,6 +30,9 @@ public class CuentaBancariaJpaEntity implements Serializable {
     @OneToMany(mappedBy = "cuentaBancaria", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TarjetaCreditoJpaEntity> tarjetas = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cuentaBancaria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MovimientoBancarioJpaEntity> movimientos = new ArrayList<>();
+
     public CuentaBancariaJpaEntity() {
     }
 
@@ -78,5 +81,13 @@ public class CuentaBancariaJpaEntity implements Serializable {
 
     public void setTarjetas(List<TarjetaCreditoJpaEntity> tarjetas) {
         this.tarjetas = tarjetas;
+    }
+
+    public List<MovimientoBancarioJpaEntity> getMovimientos() {
+        return movimientos;
+    }
+
+    public void setMovimientos(List<MovimientoBancarioJpaEntity> movimientos) {
+        this.movimientos = movimientos;
     }
 }

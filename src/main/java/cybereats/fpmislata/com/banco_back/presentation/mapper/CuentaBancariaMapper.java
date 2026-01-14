@@ -33,7 +33,8 @@ public class CuentaBancariaMapper {
                         ? request.tarjetas().stream()
                                 .map(TarjetaCreditoMapper.getInstance()::toDto)
                                 .toList()
-                        : null);
+                        : null,
+                null);
     }
 
     public CuentaBancariaResponse toResponse(CuentaBancariaDto dto) {
@@ -49,6 +50,11 @@ public class CuentaBancariaMapper {
                 dto.tarjetas() != null
                         ? dto.tarjetas().stream()
                                 .map(TarjetaCreditoMapper.getInstance()::toResponse)
+                                .toList()
+                        : null,
+                dto.movimientos() != null
+                        ? dto.movimientos().stream()
+                                .map(MovimientoBancarioMapper.getInstance()::toResponse)
                                 .toList()
                         : null);
     }

@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public record TarjetaCreditoDto(
-        Long id,
-        @NotNull @Pattern(regexp = "^[0-9]{16}$", message = "Invalid card number") String numeroTarjeta,
-        @NotNull @Future LocalDate fechaCaducidad,
-        @Min(1) @Max(9999) int cvc,
-        @NotNull String nombreCompleto) {
+                Long id,
+                @NotNull @Pattern(regexp = "^[0-9]{16}$", message = "Invalid card number") String numeroTarjeta,
+                @NotNull @Future LocalDate fechaCaducidad,
+                @Min(1) @Max(9999) int cvc,
+                @NotNull String nombreCompleto) {
 }
