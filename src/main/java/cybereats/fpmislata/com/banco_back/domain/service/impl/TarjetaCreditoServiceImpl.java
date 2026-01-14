@@ -4,6 +4,7 @@ import cybereats.fpmislata.com.banco_back.domain.dto.CuentaBancariaDto;
 import cybereats.fpmislata.com.banco_back.domain.dto.TarjetaCreditoDto;
 import cybereats.fpmislata.com.banco_back.domain.repository.TarjetaCreditoRepository;
 import cybereats.fpmislata.com.banco_back.domain.service.TarjetaCreditoService;
+import cybereats.fpmislata.com.banco_back.exception.BusinessException;
 import cybereats.fpmislata.com.banco_back.domain.validation.DtoValidator;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,19 +30,19 @@ public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
         TarjetaCreditoDto storedCard = tarjetaCreditoRepository.findByNumeroTarjeta(tarjetaCreditoDto.numeroTarjeta());
 
         if (storedCard == null) {
-            throw new IllegalArgumentException("Tarjeta no encontrada: " + tarjetaCreditoDto.numeroTarjeta());
+            throw new BusinessException("Tarjeta no encontrada: " + tarjetaCreditoDto.numeroTarjeta());
         }
 
         if (!storedCard.fechaCaducidad().equals(tarjetaCreditoDto.fechaCaducidad())) {
-            throw new IllegalArgumentException("Fecha de caducidad incorrecta");
+            throw new BusinessException("Fecha de caducidad incorrecta");
         }
 
         if (storedCard.cvc() != tarjetaCreditoDto.cvc()) {
-            throw new IllegalArgumentException("CVC incorrecto");
+            throw new BusinessException("CVC incorrecto");
         }
 
         if (!storedCard.nombreCompleto().equalsIgnoreCase(tarjetaCreditoDto.nombreCompleto())) {
-            throw new IllegalArgumentException("Nombre del titular incorrecto");
+            throw new BusinessException("Nombre del titular incorrecto");
         }
     }
 

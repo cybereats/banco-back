@@ -1,5 +1,7 @@
 package cybereats.fpmislata.com.banco_back.presentation.mapper;
 
+import java.time.LocalDate;
+
 import cybereats.fpmislata.com.banco_back.domain.dto.MovimientoBancarioDto;
 import cybereats.fpmislata.com.banco_back.domain.dto.TarjetaCreditoDto;
 import cybereats.fpmislata.com.banco_back.presentation.webModel.request.MovimientoBancarioRequest;
@@ -50,6 +52,6 @@ public class MovimientoBancarioMapper {
     }
 
     private TarjetaCreditoDto mapTarjetaCredito(Long id) {
-        return new TarjetaCreditoDto(id, null, null, 0, null);
+        return new TarjetaCreditoDto(id, "0000000000000000", LocalDate.now().plusYears(1), 0, "");
     }
 }
