@@ -68,12 +68,32 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
     }
 
     @Override
+    public CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, TarjetaCreditoDto tarjetaCreditoDto,
+            BigDecimal importe, String concepto) {
+        validateConcepto(concepto);
+        CuentaBancaria cuentaBancaria = CuentaBancariaMapper.getInstance().toModel(cuentaBancariaDto);
+        cuentaBancaria.ingresar(importe);
+        return cuentaBancariaRepository.ingresar(CuentaBancariaMapper.getInstance().toDto(cuentaBancaria),
+                tarjetaCreditoDto, importe, concepto);
+    }
+
+    @Override
     public CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto) {
         validateConcepto(concepto);
         CuentaBancaria cuentaBancaria = CuentaBancariaMapper.getInstance().toModel(cuentaBancariaDto);
         cuentaBancaria.retirar(importe);
         return cuentaBancariaRepository.retirar(CuentaBancariaMapper.getInstance().toDto(cuentaBancaria), importe,
                 concepto);
+    }
+
+    @Override
+    public CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, TarjetaCreditoDto tarjetaCreditoDto,
+            BigDecimal importe, String concepto) {
+        validateConcepto(concepto);
+        CuentaBancaria cuentaBancaria = CuentaBancariaMapper.getInstance().toModel(cuentaBancariaDto);
+        cuentaBancaria.retirar(importe);
+        return cuentaBancariaRepository.retirar(CuentaBancariaMapper.getInstance().toDto(cuentaBancaria),
+                tarjetaCreditoDto, importe, concepto);
     }
 
     private void validateConcepto(String concepto) {

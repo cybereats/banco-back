@@ -8,19 +8,25 @@ import cybereats.fpmislata.com.banco_back.domain.model.Page;
 
 public interface CuentaBancariaRepository {
 
-    CuentaBancariaDto save(CuentaBancariaDto cuentaBancariaDto);
+        CuentaBancariaDto save(CuentaBancariaDto cuentaBancariaDto);
 
-    CuentaBancariaDto findById(Long id);
+        CuentaBancariaDto findById(Long id);
 
-    CuentaBancariaDto findByIban(String iban);
+        CuentaBancariaDto findByIban(String iban);
 
-    Page<CuentaBancariaDto> findByClient(ClienteDto clienteDto);
+        Page<CuentaBancariaDto> findByClient(ClienteDto clienteDto);
 
-    CuentaBancariaDto findByTarjetaCredito(TarjetaCreditoDto tarjetaCreditoDto);
+        CuentaBancariaDto findByTarjetaCredito(TarjetaCreditoDto tarjetaCreditoDto);
 
-    CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto);
+        CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto);
 
-    CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto);
+        CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, TarjetaCreditoDto tarjetaCreditoDto,
+                        BigDecimal importe, String concepto);
 
-    void delete(Long id);
+        CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto);
+
+        CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, TarjetaCreditoDto tarjetaCreditoDto,
+                        BigDecimal importe, String concepto);
+
+        void delete(Long id);
 }

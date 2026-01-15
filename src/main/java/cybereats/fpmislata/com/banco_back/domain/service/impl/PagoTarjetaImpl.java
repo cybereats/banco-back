@@ -7,6 +7,8 @@ import cybereats.fpmislata.com.banco_back.domain.service.TarjetaCreditoService;
 import cybereats.fpmislata.com.banco_back.presentation.webModel.request.PagoTarjetaRequest;
 import cybereats.fpmislata.com.banco_back.domain.service.ClienteService;
 import cybereats.fpmislata.com.banco_back.domain.service.CuentaBancariaService;
+import cybereats.fpmislata.com.banco_back.exception.BusinessException;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -26,17 +28,32 @@ public class PagoTarjetaImpl implements PagoTarjeta {
         @Override
         public void pagoTarjeta(PagoTarjetaRequest pagoTarjetaRequest) {
 
+                // Validamos la tarjeta primero para confirmar que existe y los datos son
+                // correctos
+                tarjetaCreditoService.validate(pagoTarjetaRequest.origen());
+
                 CuentaBancaria cuentaBancariaOrigen = CuentaBancariaMapper.getInstance()
                                 .toModel(cuentaBancariaService.findByTarjetaCredito(pagoTarjetaRequest.origen()));
+
+                if (cuentaBancariaOrigen == null) {
+                        throw new BusinessException("No se encontró la cuenta asociada a la tarjeta: "
+                                        + pagoTarjetaRequest.origen().numeroTarjeta());
+                }
+
                 CuentaBancaria cuentaBancariaDestino = CuentaBancariaMapper.getInstance()
                                 .toModel(cuentaBancariaService.findByIban(pagoTarjetaRequest.destino().iban()));
 
+                if (cuentaBancariaDestino == null) {
+                        throw new BusinessException("No se encontró la cuenta de destino con IBAN: "
+                                        + pagoTarjetaRequest.destino().iban());
+                }
+
                 clienteService.validate(cuentaBancariaOrigen.getCliente().getLogin(),
                                 cuentaBancariaOrigen.getCliente().getApiToken());
-                tarjetaCreditoService.validate(pagoTarjetaRequest.origen());
 
                 cuentaBancariaService.retirar(CuentaBancariaMapper.getInstance().toDto(cuentaBancariaOrigen),
-                                pagoTarjetaRequest.pago().importe(), pagoTarjetaRequest.pago().concepto());
+                                pagoTarjetaRequest.origen(), pagoTarjetaRequest.pago().importe(),
+                                pagoTarjetaRequest.pago().concepto());
                 cuentaBancariaService.ingresar(CuentaBancariaMapper.getInstance().toDto(cuentaBancariaDestino),
                                 pagoTarjetaRequest.pago().importe(), pagoTarjetaRequest.pago().concepto());
         }

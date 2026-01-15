@@ -9,11 +9,14 @@ import cybereats.fpmislata.com.banco_back.domain.model.TipoMovimientoBancario;
 import cybereats.fpmislata.com.banco_back.domain.repository.CuentaBancariaRepository;
 import cybereats.fpmislata.com.banco_back.persistence.dao.jpa.CuentaBancariaDaoJpa;
 import cybereats.fpmislata.com.banco_back.persistence.dao.jpa.MovimientoBancarioDaoJpa;
+import cybereats.fpmislata.com.banco_back.persistence.dao.jpa.TarjetaCreditoDaoJpa;
 import cybereats.fpmislata.com.banco_back.persistence.dao.jpa.entity.CuentaBancariaJpaEntity;
 import cybereats.fpmislata.com.banco_back.persistence.dao.jpa.entity.MovimientoBancarioJpaEntity;
+import cybereats.fpmislata.com.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
 import cybereats.fpmislata.com.banco_back.persistence.repository.mapper.ClienteMapper;
 import cybereats.fpmislata.com.banco_back.persistence.repository.mapper.CuentaBancariaMapper;
 import cybereats.fpmislata.com.banco_back.persistence.repository.mapper.TarjetaCreditoMapper;
+import cybereats.fpmislata.com.banco_back.exception.ResourceNotFoundException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,11 +26,13 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
 
     private final CuentaBancariaDaoJpa cuentaBancariaDaoJpa;
     private final MovimientoBancarioDaoJpa movimientoBancarioDaoJpa;
+    private final TarjetaCreditoDaoJpa tarjetaCreditoDaoJpa;
 
     public CuentaBancariaRepositoryImpl(CuentaBancariaDaoJpa cuentaBancariaDaoJpa,
-            MovimientoBancarioDaoJpa movimientoBancarioDaoJpa) {
+            MovimientoBancarioDaoJpa movimientoBancarioDaoJpa, TarjetaCreditoDaoJpa tarjetaCreditoDaoJpa) {
         this.cuentaBancariaDaoJpa = cuentaBancariaDaoJpa;
         this.movimientoBancarioDaoJpa = movimientoBancarioDaoJpa;
+        this.tarjetaCreditoDaoJpa = tarjetaCreditoDaoJpa;
     }
 
     @Override
@@ -68,8 +73,19 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
 
     @Override
     public CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto) {
-        CuentaBancariaJpaEntity entity = CuentaBancariaMapper.getInstance().toEntity(cuentaBancariaDto);
-        CuentaBancariaJpaEntity updatedEntity = cuentaBancariaDaoJpa.update(entity);
+        return ingresar(cuentaBancariaDto, null, importe, concepto);
+    }
+
+    @Override
+    public CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, TarjetaCreditoDto tarjetaCreditoDto,
+            BigDecimal importe, String concepto) {
+        CuentaBancariaJpaEntity managedEntity = cuentaBancariaDaoJpa.findById(cuentaBancariaDto.id());
+        if (managedEntity == null) {
+            throw new RuntimeException("Cuenta bancaria not found with id: " + cuentaBancariaDto.id());
+        }
+
+        managedEntity.setSaldo(managedEntity.getSaldo().add(importe));
+        CuentaBancariaJpaEntity updatedEntity = cuentaBancariaDaoJpa.update(managedEntity);
 
         MovimientoBancarioJpaEntity movimiento = new MovimientoBancarioJpaEntity();
         movimiento.setTipoMovimientoBancario(TipoMovimientoBancario.HABER);
@@ -79,6 +95,16 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
         movimiento.setConcepto((concepto == null || concepto.trim().isEmpty()) ? "Ingreso" : concepto);
         movimiento.setCuentaBancaria(updatedEntity);
 
+        if (tarjetaCreditoDto != null) {
+            TarjetaCreditoJpaEntity card = null;
+            if (tarjetaCreditoDto.id() != null) {
+                card = tarjetaCreditoDaoJpa.findById(tarjetaCreditoDto.id());
+            } else if (tarjetaCreditoDto.numeroTarjeta() != null) {
+                card = tarjetaCreditoDaoJpa.findByNumeroTarjeta(tarjetaCreditoDto.numeroTarjeta());
+            }
+            movimiento.setTarjetaCreditoOrigen(card);
+        }
+
         movimientoBancarioDaoJpa.insert(movimiento);
 
         return CuentaBancariaMapper.getInstance().toDto(updatedEntity);
@@ -86,8 +112,19 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
 
     @Override
     public CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto) {
-        CuentaBancariaJpaEntity entity = CuentaBancariaMapper.getInstance().toEntity(cuentaBancariaDto);
-        CuentaBancariaJpaEntity updatedEntity = cuentaBancariaDaoJpa.update(entity);
+        return retirar(cuentaBancariaDto, null, importe, concepto);
+    }
+
+    @Override
+    public CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, TarjetaCreditoDto tarjetaCreditoDto,
+            BigDecimal importe, String concepto) {
+        CuentaBancariaJpaEntity managedEntity = cuentaBancariaDaoJpa.findById(cuentaBancariaDto.id());
+        if (managedEntity == null) {
+            throw new RuntimeException("Cuenta bancaria not found with id: " + cuentaBancariaDto.id());
+        }
+
+        managedEntity.setSaldo(managedEntity.getSaldo().subtract(importe));
+        CuentaBancariaJpaEntity updatedEntity = cuentaBancariaDaoJpa.update(managedEntity);
 
         MovimientoBancarioJpaEntity movimiento = new MovimientoBancarioJpaEntity();
         movimiento.setTipoMovimientoBancario(TipoMovimientoBancario.DEBE);
@@ -96,6 +133,16 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
         movimiento.setFecha(LocalDateTime.now());
         movimiento.setConcepto((concepto == null || concepto.trim().isEmpty()) ? "Reintegro" : concepto);
         movimiento.setCuentaBancaria(updatedEntity);
+
+        if (tarjetaCreditoDto != null) {
+            TarjetaCreditoJpaEntity card = null;
+            if (tarjetaCreditoDto.id() != null) {
+                card = tarjetaCreditoDaoJpa.findById(tarjetaCreditoDto.id());
+            } else if (tarjetaCreditoDto.numeroTarjeta() != null) {
+                card = tarjetaCreditoDaoJpa.findByNumeroTarjeta(tarjetaCreditoDto.numeroTarjeta());
+            }
+            movimiento.setTarjetaCreditoOrigen(card);
+        }
 
         movimientoBancarioDaoJpa.insert(movimiento);
 

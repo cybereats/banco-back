@@ -26,7 +26,6 @@ import cybereats.fpmislata.com.banco_back.persistence.repository.impl.AuthReposi
 import cybereats.fpmislata.com.banco_back.persistence.repository.impl.ClienteRepositoryImpl;
 import cybereats.fpmislata.com.banco_back.persistence.repository.impl.CuentaBancariaRepositoryImpl;
 import cybereats.fpmislata.com.banco_back.persistence.repository.impl.TarjetaCreditoRepositoryImpl;
-import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -74,8 +73,8 @@ public class SpringConfig {
 
     @Bean
     public CuentaBancariaRepository cuentaBancariaRepository(CuentaBancariaDaoJpa cuentaBancariaDaoJpa,
-            MovimientoBancarioDaoJpa movimientoBancarioDaoJpa) {
-        return new CuentaBancariaRepositoryImpl(cuentaBancariaDaoJpa, movimientoBancarioDaoJpa);
+            MovimientoBancarioDaoJpa movimientoBancarioDaoJpa, TarjetaCreditoDaoJpa tarjetaCreditoDaoJpa) {
+        return new CuentaBancariaRepositoryImpl(cuentaBancariaDaoJpa, movimientoBancarioDaoJpa, tarjetaCreditoDaoJpa);
     }
 
     @Bean

@@ -9,21 +9,27 @@ import cybereats.fpmislata.com.banco_back.domain.model.Page;
 
 public interface CuentaBancariaService {
 
-    CuentaBancariaDto create(CuentaBancariaDto cuentaBancariaDto);
+        CuentaBancariaDto create(CuentaBancariaDto cuentaBancariaDto);
 
-    CuentaBancariaDto update(CuentaBancariaDto cuentaBancariaDto);
+        CuentaBancariaDto update(CuentaBancariaDto cuentaBancariaDto);
 
-    CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto);
+        CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto);
 
-    CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto);
+        CuentaBancariaDto ingresar(CuentaBancariaDto cuentaBancariaDto, TarjetaCreditoDto tarjetaCreditoDto,
+                        BigDecimal importe, String concepto);
 
-    CuentaBancariaDto findById(Long id);
+        CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, BigDecimal importe, String concepto);
 
-    Page<CuentaBancariaDto> findByClient(ClienteDto clienteDto);
+        CuentaBancariaDto retirar(CuentaBancariaDto cuentaBancariaDto, TarjetaCreditoDto tarjetaCreditoDto,
+                        BigDecimal importe, String concepto);
 
-    CuentaBancariaDto findByIban(String iban);
+        CuentaBancariaDto findById(Long id);
 
-    CuentaBancariaDto findByTarjetaCredito(TarjetaCreditoDto tarjetaCreditoDto);
+        Page<CuentaBancariaDto> findByClient(ClienteDto clienteDto);
 
-    void delete(Long id);
+        CuentaBancariaDto findByIban(String iban);
+
+        CuentaBancariaDto findByTarjetaCredito(TarjetaCreditoDto tarjetaCreditoDto);
+
+        void delete(Long id);
 }

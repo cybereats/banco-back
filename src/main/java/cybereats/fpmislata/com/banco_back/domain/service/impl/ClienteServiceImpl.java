@@ -4,6 +4,7 @@ import cybereats.fpmislata.com.banco_back.domain.dto.ClienteDto;
 import cybereats.fpmislata.com.banco_back.domain.model.Page;
 import cybereats.fpmislata.com.banco_back.domain.repository.ClienteRepository;
 import cybereats.fpmislata.com.banco_back.domain.service.ClienteService;
+import cybereats.fpmislata.com.banco_back.exception.BusinessException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -42,7 +43,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void validate(String login, String apiToken) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        ClienteDto clienteDto = clienteRepository.findByLogin(login);
+        if (clienteDto == null || !clienteDto.apiToken().equals(apiToken)) {
+            throw new BusinessException("Credenciales de API invalidas");
+        }
     }
 }

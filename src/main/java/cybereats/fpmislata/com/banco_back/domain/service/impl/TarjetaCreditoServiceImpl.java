@@ -6,6 +6,8 @@ import cybereats.fpmislata.com.banco_back.domain.repository.TarjetaCreditoReposi
 import cybereats.fpmislata.com.banco_back.domain.service.TarjetaCreditoService;
 import cybereats.fpmislata.com.banco_back.exception.BusinessException;
 import cybereats.fpmislata.com.banco_back.domain.validation.DtoValidator;
+
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +35,7 @@ public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
             throw new BusinessException("Tarjeta no encontrada: " + tarjetaCreditoDto.numeroTarjeta());
         }
 
-        if (!storedCard.fechaCaducidad().equals(tarjetaCreditoDto.fechaCaducidad())) {
+        if (storedCard.fechaCaducidad().isBefore(LocalDate.now())) {
             throw new BusinessException("Fecha de caducidad incorrecta");
         }
 

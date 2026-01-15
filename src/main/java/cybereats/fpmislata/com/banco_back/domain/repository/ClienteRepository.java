@@ -10,5 +10,7 @@ public interface ClienteRepository {
 
     Page<ClienteDto> findAll();
 
+    ClienteDto findByLogin(String login);
+
     void delete(Long id);
 }

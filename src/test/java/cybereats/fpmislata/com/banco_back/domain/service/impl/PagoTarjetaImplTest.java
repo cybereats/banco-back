@@ -72,8 +72,8 @@ class PagoTarjetaImplTest {
         assertAll(
                 () -> verify(clienteService).validate("jdoe", "token"),
                 () -> verify(tarjetaCreditoService).validate(tarjetaOrigen),
-                () -> verify(cuentaBancariaService).retirar(any(CuentaBancariaDto.class), eq(new BigDecimal("10.00")),
-                        eq("Test payment")),
+                () -> verify(cuentaBancariaService).retirar(any(CuentaBancariaDto.class), eq(tarjetaOrigen),
+                        eq(new BigDecimal("10.00")), eq("Test payment")),
                 () -> verify(cuentaBancariaService).ingresar(any(CuentaBancariaDto.class), eq(new BigDecimal("10.00")),
                         eq("Test payment")));
     }

@@ -50,10 +50,6 @@ public class CuentaBancariaController {
 
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<Page<CuentaBancariaResponse>> getCuentasByCliente(@PathVariable Long clienteId) {
-        // Creating a dummy request or dto just to hold the ID, or Service should find
-        // by ID.
-        // Service finds by ClienteDto.
-        // We can reconstruct a partial ClienteDto with just the ID.
         ClienteDto clientDto = new ClienteDto(clienteId, "", "", "", null, null, "00000000X", null);
         Page<CuentaBancariaDto> cuentaDtoPage = cuentaBancariaService.findByClient(clientDto);
 

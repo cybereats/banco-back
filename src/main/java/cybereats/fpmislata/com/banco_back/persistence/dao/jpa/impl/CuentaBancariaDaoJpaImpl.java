@@ -9,7 +9,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 public class CuentaBancariaDaoJpaImpl implements CuentaBancariaDaoJpa {
 
@@ -53,7 +52,7 @@ public class CuentaBancariaDaoJpaImpl implements CuentaBancariaDaoJpa {
 
     @Override
     public CuentaBancariaJpaEntity findByTarjetaCredito(TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity) {
-        String jpql = "SELECT c FROM CuentaBancariaJpaEntity c JOIN TarjetaCreditoJpaEntity t ON t.cuentaBancaria.id = c.id WHERE t.numeroTarjeta = :numeroTarjeta";
+        String jpql = "SELECT t.cuentaBancaria FROM TarjetaCreditoJpaEntity t WHERE t.numeroTarjeta = :numeroTarjeta";
         TypedQuery<CuentaBancariaJpaEntity> query = entityManager.createQuery(jpql, CuentaBancariaJpaEntity.class);
         query.setParameter("numeroTarjeta", tarjetaCreditoJpaEntity.getNumeroTarjeta());
 

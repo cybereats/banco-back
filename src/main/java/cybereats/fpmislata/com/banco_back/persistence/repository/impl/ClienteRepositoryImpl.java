@@ -42,6 +42,11 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
+    public ClienteDto findByLogin(String login) {
+        return ClienteMapper.getInstance().toDto(clienteDaoJpa.findByLogin(login));
+    }
+
+    @Override
     public void delete(Long id) {
         clienteDaoJpa.delete(id);
     }
