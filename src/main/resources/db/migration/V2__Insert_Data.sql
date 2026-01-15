@@ -9,9 +9,9 @@
 -- =============================================
 INSERT INTO cliente (login, password, nombre, apellido1, apellido2, dni, api_token) 
 VALUES 
-('usuario1', '$2a$12$N9qo8uLOickgx2ZMRZoMyeIjZAgOtT7P6D82DUcjh.98Q7Vdfp.8q', 'Ismael', 'Garcia', 'Garcia', '12345678A', 'token_demo_123'),
-('usuario2', '$2a$12$N9qo8uLOickgx2ZMRZoMyeIjZAgOtT7P6D82DUcjh.98Q7Vdfp.8q', 'Ana', 'Lopez', 'Perez', '87654321B', 'token_demo_456'),
-('usuario3', '$2a$12$N9qo8uLOickgx2ZMRZoMyeIjZAgOtT7P6D82DUcjh.98Q7Vdfp.8q', 'Marcos', 'Ruiz', 'Sanz', '11223344C', 'token_demo_789');
+('usuario1', '$2a$12$6bV.Hw7P0wpMJXVvp7NBee8078m49vQatXGDm.t8j/TDEqE9ZNvNa', 'Ismael', 'Garcia', 'Garcia', '12345678A', 'token_demo_123'),
+('usuario2', '$2a$12$5KwcHTqSprWEYuOEdD5.ru9SoZ4T/c.16/hnuaU9CI7By1XW3Nld2', 'Ana', 'Lopez', 'Perez', '87654321B', 'token_demo_456'),
+('usuario3', '$2a$12$uHB2FjulOTs/xbrFoc1Ggu3gyUiA6EUddme003/k7LLu1QV6zAsh6', 'Marcos', 'Ruiz', 'Sanz', '11223344C', 'token_demo_789');
 
 -- =============================================
 -- CUENTAS BANCARIAS
