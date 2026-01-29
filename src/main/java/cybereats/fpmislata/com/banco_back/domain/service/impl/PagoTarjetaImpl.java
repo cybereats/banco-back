@@ -28,8 +28,6 @@ public class PagoTarjetaImpl implements PagoTarjeta {
         @Override
         public void pagoTarjeta(PagoTarjetaRequest pagoTarjetaRequest) {
 
-                // Validamos la tarjeta primero para confirmar que existe y los datos son
-                // correctos
                 tarjetaCreditoService.validate(pagoTarjetaRequest.origen());
 
                 CuentaBancaria cuentaBancariaOrigen = CuentaBancariaMapper.getInstance()
