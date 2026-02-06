@@ -35,6 +35,11 @@ public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
             throw new BusinessException("Tarjeta no encontrada: " + tarjetaCreditoDto.numeroTarjeta());
         }
 
+        if (!java.time.YearMonth.from(storedCard.fechaCaducidad())
+                .equals(java.time.YearMonth.from(tarjetaCreditoDto.fechaCaducidad()))) {
+            throw new BusinessException("La fecha de caducidad no coincide (MES-AÑO)");
+        }
+
         if (storedCard.fechaCaducidad().isBefore(LocalDate.now())) {
             throw new BusinessException("Fecha de caducidad incorrecta");
         }

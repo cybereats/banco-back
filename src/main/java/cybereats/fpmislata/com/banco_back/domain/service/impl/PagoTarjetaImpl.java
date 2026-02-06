@@ -28,6 +28,13 @@ public class PagoTarjetaImpl implements PagoTarjeta {
         @Override
         public void pagoTarjeta(PagoTarjetaRequest pagoTarjetaRequest) {
 
+                if (!"usuario1".equals(pagoTarjetaRequest.autorizacion().login())) {
+                        throw new BusinessException("Login de autorización incorrecto.");
+                }
+                if (!"token_demo_123".equals(pagoTarjetaRequest.autorizacion().apiToken())) {
+                        throw new BusinessException("API Token de autorización incorrecto.");
+                }
+
                 tarjetaCreditoService.validate(pagoTarjetaRequest.origen());
 
                 CuentaBancaria cuentaBancariaOrigen = CuentaBancariaMapper.getInstance()
